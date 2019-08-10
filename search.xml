@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[test1]]></title>
+    <url>%2F2019%2F08%2F10%2Ftest1%2F</url>
+    <content type="text"><![CDATA[test file]]></content>
+      <categories>
+        <category>test</category>
+      </categories>
+      <tags>
+        <tag>test</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[python爬取铁路站点数据]]></title>
     <url>%2F2019%2F08%2F10%2Fpython%E7%88%AC%E5%8F%96%E9%93%81%E8%B7%AF%E7%AB%99%E7%82%B9%E6%95%B0%E6%8D%AE%2F</url>
     <content type="text"></content>
