@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title><![CDATA[test1]]></title>
-    <url>%2F2019%2F08%2F10%2Ftest1%2F</url>
-    <content type="text"><![CDATA[test file]]></content>
-      <categories>
-        <category>test</category>
-      </categories>
-      <tags>
-        <tag>test</tag>
-      </tags>
+    <title><![CDATA[hexo搭建博客并部署至GitHub Pages详解]]></title>
+    <url>%2F2019%2F08%2F11%2Fhexo%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E5%B9%B6%E9%83%A8%E7%BD%B2%E8%87%B3GitHub-Pages%E8%AF%A6%E8%A7%A3%2F</url>
+    <content type="text"></content>
   </entry>
   <entry>
     <title><![CDATA[python爬取铁路站点数据]]></title>
@@ -20,17 +14,6 @@
       </categories>
       <tags>
         <tag>python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[hexo简介]]></title>
-    <url>%2F2019%2F08%2F10%2Fhexo%E7%AE%80%E4%BB%8B%2F</url>
-    <content type="text"></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>hexo</tag>
       </tags>
   </entry>
 </search>
