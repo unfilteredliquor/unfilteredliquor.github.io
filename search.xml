@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title><![CDATA[hexo搭建博客并部署至GitHub Pages详解]]></title>
-    <url>%2F2019%2F08%2F11%2Fhexo%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E5%B9%B6%E9%83%A8%E7%BD%B2%E8%87%B3GitHub-Pages%E8%AF%A6%E8%A7%A3%2F</url>
-    <content type="text"></content>
+    <title><![CDATA[hexo搭建博客并部署至GitHub Pages详解(macOS)]]></title>
+    <url>%2F2019%2F08%2F11%2Fhexo%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E5%B9%B6%E9%83%A8%E7%BD%B2%E8%87%B3GitHub-Pages%E8%AF%A6%E8%A7%A3(macOS)%2F</url>
+    <content type="text"><![CDATA[环境准备git &amp; GitHubgit安装 通过homebrew安装如果之前没有安装homebrew，需要先安装homebrew，在终端输入：1/usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot; homebrew安装完成之后可以在终端输入brew --version确认是否安装成功，安装成功会显示homebrew的版本： hexo]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>git</tag>
+        <tag>GitHub</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[python爬取铁路站点数据]]></title>
     <url>%2F2019%2F08%2F10%2Fpython%E7%88%AC%E5%8F%96%E9%93%81%E8%B7%AF%E7%AB%99%E7%82%B9%E6%95%B0%E6%8D%AE%2F</url>
-    <content type="text"></content>
+    <content type="text"><![CDATA[过段时间填坑]]></content>
       <categories>
         <category>技术</category>
       </categories>
