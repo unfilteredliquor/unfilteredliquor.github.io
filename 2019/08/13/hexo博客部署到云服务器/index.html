@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="generator" content="Hexo 3.9.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.3.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    save_scroll: false,
+    copycode: {"enable":false,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="为什么想要部署到云服务器我前边在GitHub上搭建了hexo博客，但是由于访问GitHub Pages访问速度过于感人，所以我决定自己租一个云服务器来搭建hexo博客。 服务器(CentOS)配置服务器环境服务器的配置为1 核CPU、 2 GB内存、 1 Mbps带宽，操作系统为CentOS 7.6。 git配置安装git执行su root指令切换到root用户下，执行yum install -y">
+<meta name="keywords" content="hexo,centos,git">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hexo博客部署到云服务器">
+<meta property="og:url" content="https://unfilteredliquor.github.io/2019/08/13/hexo博客部署到云服务器/index.html">
+<meta property="og:site_name" content="Devin">
+<meta property="og:description" content="为什么想要部署到云服务器我前边在GitHub上搭建了hexo博客，但是由于访问GitHub Pages访问速度过于感人，所以我决定自己租一个云服务器来搭建hexo博客。 服务器(CentOS)配置服务器环境服务器的配置为1 核CPU、 2 GB内存、 1 Mbps带宽，操作系统为CentOS 7.6。 git配置安装git执行su root指令切换到root用户下，执行yum install -y">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-08-13T18:19:53.112Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="hexo博客部署到云服务器">
+<meta name="twitter:description" content="为什么想要部署到云服务器我前边在GitHub上搭建了hexo博客，但是由于访问GitHub Pages访问速度过于感人，所以我决定自己租一个云服务器来搭建hexo博客。 服务器(CentOS)配置服务器环境服务器的配置为1 核CPU、 2 GB内存、 1 Mbps带宽，操作系统为CentOS 7.6。 git配置安装git执行su root指令切换到root用户下，执行yum install -y">
+  <link rel="canonical" href="https://unfilteredliquor.github.io/2019/08/13/hexo博客部署到云服务器/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>hexo博客部署到云服务器 | Devin</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  <div class="container sidebar-position-right">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Devin</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">日落山水静，为君起松声。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+  </div>
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content page-post-detail">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://unfilteredliquor.github.io/2019/08/13/hexo博客部署到云服务器/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Devin Chen">
+      <meta itemprop="description" content="日落山水静，为君起松声。">
+      <meta itemprop="image" content="/images/myhead.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Devin">
+    </span>
+      <header class="post-header">
+
+        
+          <h1 class="post-title" itemprop="name headline">hexo博客部署到云服务器
+
+            
+          </h1>
+        
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-13 22:25:05" itemprop="dateCreated datePublished" datetime="2019-08-13T22:25:05+08:00">2019-08-13</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-08-14 02:19:53" itemprop="dateModified" datetime="2019-08-14T02:19:53+08:00">2019-08-14</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/技术/" itemprop="url" rel="index"><span itemprop="name">技术</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span>2.5k</span>
+            </span>
+          
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              
+              <span>2 分钟</span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="为什么想要部署到云服务器"><a href="#为什么想要部署到云服务器" class="headerlink" title="为什么想要部署到云服务器"></a>为什么想要部署到云服务器</h1><p>我前边在GitHub上搭建了hexo博客，但是由于访问GitHub Pages访问速度过于感人，所以我决定自己租一个云服务器来搭建hexo博客。</p>
+<h1 id="服务器-CentOS-配置"><a href="#服务器-CentOS-配置" class="headerlink" title="服务器(CentOS)配置"></a>服务器(CentOS)配置</h1><h2 id="服务器环境"><a href="#服务器环境" class="headerlink" title="服务器环境"></a>服务器环境</h2><p>服务器的配置为1 核CPU、 2 GB内存、 1 Mbps带宽，操作系统为CentOS 7.6。</p>
+<h2 id="git配置"><a href="#git配置" class="headerlink" title="git配置"></a>git配置</h2><h3 id="安装git"><a href="#安装git" class="headerlink" title="安装git"></a>安装git</h3><p>执行<code>su root</code>指令切换到root用户下，执行<code>yum install -y git</code>指令安装git，执行<code>git --version</code>验证是否安装成功。</p>
+<h3 id="添加git用户"><a href="#添加git用户" class="headerlink" title="添加git用户"></a>添加git用户</h3><p>执行<code>adduser git</code>指令添加用户git，执行<code>passwd git ${password}</code>指令修改git的密码。</p>
+<h3 id="配置ssh访问"><a href="#配置ssh访问" class="headerlink" title="配置ssh访问"></a>配置ssh访问</h3><ol>
+<li><p>切换到git用户。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">su git</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>进入 git用户的主目录。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd /home/git</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建.ssh文件夹，如果此文件夹已经存在，请忽略此步骤。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir .ssh</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>进入.ssh文件夹，创建authorized_keys文件，用于存放客户端访问的ssh公钥。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd .ssh</span><br><span class="line">touch authorized_keys</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>设置权限。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chmod 700 /home/git/.ssh/</span><br><span class="line">chmod 600 /home/git/.ssh/authorized_keys</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将客户端公钥复制到authorized_keys文件中。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim authorized_keys</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h3 id="创建git仓库"><a href="#创建git仓库" class="headerlink" title="创建git仓库"></a>创建git仓库</h3><ol>
+<li><p>切换到git用户。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">su git</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>进入git的用户主目录。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd /home/git</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在目录下创建${repositoryName}.git文件夹。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir myblog.git</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>进入${repositoryName}.git文件夹，初始化git仓库。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd myblog.git</span><br><span class="line">git init --bare</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>至此，服务器git配置基本完成。</p>
+<h2 id="nginx配置"><a href="#nginx配置" class="headerlink" title="nginx配置"></a>nginx配置</h2><h3 id="安装nginx"><a href="#安装nginx" class="headerlink" title="安装nginx"></a>安装nginx</h3><ol>
+<li><p>切换到root用户。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">su root</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装nginx。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y nginx</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>nginx服务命令</p>
+</li>
+</ol>
+<ul>
+<li>启动：<code>service nginx start</code></li>
+<li>停止：<code>service nginx stop</code></li>
+<li>重启：<code>service nginx restart</code></li>
+<li>开机自启：<code>systemctl enable nginx</code></li>
+</ul>
+<h3 id="创建网站目录"><a href="#创建网站目录" class="headerlink" title="创建网站目录"></a>创建网站目录</h3><ol>
+<li><p>创建一个文件夹作为网站的根目录。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">su root</span><br><span class="line">mkdir /home/myblog  #mkdir /home/$&#123;site-folder&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>赋予网站根目录文件夹权限。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chown git:git -R /home/myblog   # chown $&#123;username&#125;:$&#123;folder-name&#125; -R /home/$&#123;site-folder&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h3 id="配置nginx"><a href="#配置nginx" class="headerlink" title="配置nginx"></a>配置nginx</h3><p>使用<code>nginx -t</code>命令查看位置，一般为<code>/etc/nginx/nginx.conf</code>。<br>使用 <code>vim /etc/nginx/nginx.conf</code>命令进行编辑，修改配置文件如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">listen       80 default_server;</span><br><span class="line">listen       [::]:80 default_server;</span><br><span class="line">server_name  $&#123;domain-name&#125;;    # 修改为自己的域名</span><br><span class="line">root         /home/myblog;    # 修改为网站的根目录</span><br><span class="line"></span><br><span class="line"># Load configuration files for the default server block.</span><br><span class="line">include /etc/nginx/default.d/*.conf;</span><br><span class="line"></span><br><span class="line">location / &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">error_page 404 /404.html;</span><br><span class="line">location = /40x.html &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">error_page 500 502 503 504 /50x.html;</span><br><span class="line">location = /50x.html &#123;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="自动化部署"><a href="#自动化部署" class="headerlink" title="自动化部署"></a>自动化部署</h2><p>在myblog.git裸库的hooks文件夹中，新建post-receive文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim myblog.git/hooks/post-receive</span><br></pre></td></tr></table></figure>
+
+<p>填入以下内容，其中/home/myblog为网站目录，根据自己的填入，保存退出。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/sh</span><br><span class="line">git --work-tree=/home/myblog --git-dir=/home/git/myblog.git checkout -f</span><br></pre></td></tr></table></figure>
+
+<p>保存后，赋予这个文件可执行权限。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod +x /home/git/myblog.git/hooks/post-receive</span><br></pre></td></tr></table></figure>
+
+<h1 id="本地配置"><a href="#本地配置" class="headerlink" title="本地配置"></a>本地配置</h1><h2 id="hexo配置"><a href="#hexo配置" class="headerlink" title="hexo配置"></a>hexo配置</h2><p>参考我的上一篇<a href="http://flowinghaze.cn/2019/08/11/hexo%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E5%B9%B6%E9%83%A8%E7%BD%B2%E8%87%B3GitHub-Pages%E8%AF%A6%E8%A7%A3(macOS)/" target="_blank" rel="noopener">文章</a>。</p>
+<ol>
+<li><p>在自定义位置初始化hexo项目。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd desktop</span><br><span class="line">mkdir myblog</span><br><span class="line">hexo init</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改_config.yml将url指定为自己的域名。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">url: http://$&#123;domain-name&#125;/</span><br><span class="line">root: /</span><br><span class="line">permalink: :year/:month/:day/:title/</span><br><span class="line">permalink_defaults:</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改 _config.yml将repo指定为自己的仓库地址，发布到的分支默认为master：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">type: git</span><br><span class="line">repo: git@$&#123;domain-name&#125;:$&#123;repositoryName&#125;.git</span><br><span class="line">branch: master</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="ssh配置"><a href="#ssh配置" class="headerlink" title="ssh配置"></a>ssh配置</h2><p>通过终端命令创建ssh key</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C &quot;username@domain.com&quot;</span><br></pre></td></tr></table></figure>
+
+<p>在终端输入<code>open ~/.ssh</code>打开.ssh文件夹，即可看到id_rsa.pub文件。</p>
+<h1 id="hexo使用"><a href="#hexo使用" class="headerlink" title="hexo使用"></a>hexo使用</h1><p>参考我的上一篇<a href="http://flowinghaze.cn/2019/08/11/hexo%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E5%B9%B6%E9%83%A8%E7%BD%B2%E8%87%B3GitHub-Pages%E8%AF%A6%E8%A7%A3(macOS)/" target="_blank" rel="noopener">文章</a>。</p>
+<h1 id="结束"><a href="#结束" class="headerlink" title="结束"></a>结束</h1><p>欢迎交流，与君共勉。</p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/hexo/" rel="tag"># hexo</a>
+            
+              <a href="/tags/centos/" rel="tag"># centos</a>
+            
+              <a href="/tags/git/" rel="tag"># git</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2019/08/11/hexo搭建博客并部署至GitHub-Pages详解(macOS)/" rel="next" title="hexo搭建博客并部署至GitHub Pages详解(macOS)">
+                  <i class="fa fa-chevron-left"></i> hexo搭建博客并部署至GitHub Pages详解(macOS)
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/myhead.png"
+      alt="Devin Chen">
+  <p class="site-author-name" itemprop="name">Devin Chen</p>
+  <div class="site-description motion-element" itemprop="description">日落山水静，为君起松声。</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:chendingliang530@gmail.com" title="E-Mail &rarr; mailto:chendingliang530@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+
+        </div>
+      </div>
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#为什么想要部署到云服务器"><span class="nav-number">1.</span> <span class="nav-text">为什么想要部署到云服务器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#服务器-CentOS-配置"><span class="nav-number">2.</span> <span class="nav-text">服务器(CentOS)配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#服务器环境"><span class="nav-number">2.1.</span> <span class="nav-text">服务器环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git配置"><span class="nav-number">2.2.</span> <span class="nav-text">git配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装git"><span class="nav-number">2.2.1.</span> <span class="nav-text">安装git</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加git用户"><span class="nav-number">2.2.2.</span> <span class="nav-text">添加git用户</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置ssh访问"><span class="nav-number">2.2.3.</span> <span class="nav-text">配置ssh访问</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建git仓库"><span class="nav-number">2.2.4.</span> <span class="nav-text">创建git仓库</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nginx配置"><span class="nav-number">2.3.</span> <span class="nav-text">nginx配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装nginx"><span class="nav-number">2.3.1.</span> <span class="nav-text">安装nginx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建网站目录"><span class="nav-number">2.3.2.</span> <span class="nav-text">创建网站目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置nginx"><span class="nav-number">2.3.3.</span> <span class="nav-text">配置nginx</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自动化部署"><span class="nav-number">2.4.</span> <span class="nav-text">自动化部署</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#本地配置"><span class="nav-number">3.</span> <span class="nav-text">本地配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#hexo配置"><span class="nav-number">3.1.</span> <span class="nav-text">hexo配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ssh配置"><span class="nav-number">3.2.</span> <span class="nav-text">ssh配置</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#hexo使用"><span class="nav-number">4.</span> <span class="nav-text">hexo使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#结束"><span class="nav-number">5.</span> <span class="nav-text">结束</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Devin Chen</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+      </div>
+
+    
+
+  </div>
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+<script src="/js/utils.js?v=7.3.0"></script>
+  <script src="/js/motion.js?v=7.3.0"></script>
+
+
+  <script src="/js/affix.js?v=7.3.0"></script>
+  <script src="/js/schemes/pisces.js?v=7.3.0"></script>
+
+
+
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+  
+  <script src="/js/scrollspy.js?v=7.3.0"></script>
+<script src="/js/post-details.js?v=7.3.0"></script>
+
+
+</body>
+</html>
